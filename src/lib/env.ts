@@ -1,8 +1,9 @@
+// src/lib/env.ts
 import { z } from "zod";
 
 const envSchema = z.object({
   DATABASE_URL: z.string().min(1),
-  JWT_SECRET: z.string().min(16, "JWT_SECRET must be at least 16 characters"),
+  JWT_SECRET: z.string().min(16),
   NODE_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),
@@ -14,13 +15,24 @@ const envSchema = z.object({
 
 export type Env = z.infer<typeof envSchema>;
 
-function loadEnv(): Env {
-  const parsed = envSchema.safeParse(process.env);
-  if (!parsed.success) {
-    const msg = parsed.error.flatten().fieldErrors;
-    throw new Error(`Invalid environment: ${JSON.stringify(msg)}`);
+let _env: Env | null = null;
+
+export function getEnv(): Env {
+  if (!_env) {
+    const parsed = envSchema.safeParse(process.env);
+    if (!parsed.success) {
+      throw new Error(
+        `Invalid environment: ${JSON.stringify(parsed.error.flatten().fieldErrors)}`,
+      );
+    }
+    _env = parsed.data;
   }
-  return parsed.data;
+  return _env;
 }
 
-export const env = loadEnv();
+// keep `env` as a convenience alias (lazy getter)
+export const env = new Proxy({} as Env, {
+  get(_, key) {
+    return getEnv()[key as keyof Env];
+  },
+});

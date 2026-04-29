@@ -49,7 +49,7 @@ export async function updateUserAdmin(
     status?: UserStatus;
     role?: Role;
     approveOrganizer?: boolean;
-  }
+  },
 ) {
   const target = await prisma.user.findUnique({ where: { id: targetUserId } });
   if (!target) {
