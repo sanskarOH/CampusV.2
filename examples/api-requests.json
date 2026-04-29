@@ -1,0 +1,144 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "notes": "Send cookies on subsequent requests after login/register (HTTP-only cookie cms_access_token). Use a REST client with cookie jar or browser.",
+  "auth": {
+    "registerStudent": {
+      "method": "POST",
+      "path": "/api/auth/register",
+      "body": {
+        "name": "Jane Student",
+        "email": "jane@college.edu",
+        "password": "Password123!",
+        "role": "STUDENT"
+      }
+    },
+    "registerOrganizer": {
+      "method": "POST",
+      "path": "/api/auth/register",
+      "body": {
+        "name": "Alex Organizer",
+        "email": "alex@college.edu",
+        "password": "Password123!",
+        "role": "ORGANIZER"
+      }
+    },
+    "login": {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "body": {
+        "email": "student@college.edu",
+        "password": "Password123!"
+      }
+    },
+    "logout": {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "body": {}
+    },
+    "me": {
+      "method": "GET",
+      "path": "/api/auth/me"
+    }
+  },
+  "events": {
+    "listPublic": {
+      "method": "GET",
+      "path": "/api/events?page=1&limit=20&search=workshop&category=Career&dateFrom=2026-01-01&dateTo=2026-12-31"
+    },
+    "create": {
+      "method": "POST",
+      "path": "/api/events",
+      "headers": { "Content-Type": "application/json" },
+      "body": {
+        "title": "Hack Night",
+        "description": "Bring your laptop.",
+        "category": "Tech",
+        "date": "2026-06-15T18:00:00.000Z",
+        "seats": 40
+      }
+    },
+    "detail": {
+      "method": "GET",
+      "path": "/api/events/{eventId}"
+    },
+    "update": {
+      "method": "PATCH",
+      "path": "/api/events/{eventId}",
+      "body": {
+        "seats": 45,
+        "description": "Updated description."
+      }
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/api/events/{eventId}"
+    }
+  },
+  "registrations": {
+    "register": {
+      "method": "POST",
+      "path": "/api/registrations",
+      "body": {
+        "eventId": "clxxxxxxxxxxxxxxxxxxxxxxxx"
+      }
+    },
+    "cancel": {
+      "method": "DELETE",
+      "path": "/api/registrations/{registrationId}"
+    }
+  },
+  "dashboard": {
+    "myRegistrations": {
+      "method": "GET",
+      "path": "/api/dashboard/registrations"
+    }
+  },
+  "feedback": {
+    "create": {
+      "method": "POST",
+      "path": "/api/events/{eventId}/feedback",
+      "body": {
+        "rating": 5,
+        "comment": "Great session and well organized."
+      }
+    }
+  },
+  "notifications": {
+    "list": {
+      "method": "GET",
+      "path": "/api/notifications?page=1&limit=20"
+    },
+    "markRead": {
+      "method": "PATCH",
+      "path": "/api/notifications/{notificationId}/read"
+    }
+  },
+  "admin": {
+    "listUsers": {
+      "method": "GET",
+      "path": "/api/admin/users?page=1&limit=20&role=ORGANIZER&status=PENDING"
+    },
+    "suspendUser": {
+      "method": "PATCH",
+      "path": "/api/admin/users/{userId}",
+      "body": {
+        "status": "SUSPENDED"
+      }
+    },
+    "approveOrganizer": {
+      "method": "PATCH",
+      "path": "/api/admin/users/{userId}",
+      "body": {
+        "approveOrganizer": true
+      }
+    },
+    "changeRole": {
+      "method": "PATCH",
+      "path": "/api/admin/users/{userId}",
+      "body": {
+        "role": "ORGANIZER",
+        "status": "PENDING"
+      }
+    }
+  }
+}
