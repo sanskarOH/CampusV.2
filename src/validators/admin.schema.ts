@@ -9,7 +9,7 @@ export const adminUsersQuerySchema = paginationSchema.extend({
   status: userStatusEnum.optional(),
   search: z.string().max(200).optional(),
 });
-
+//meow
 export const adminUpdateUserBodySchema = z
   .object({
     status: userStatusEnum.optional(),
@@ -21,7 +21,7 @@ export const adminUpdateUserBodySchema = z
       b.status !== undefined ||
       b.role !== undefined ||
       b.approveOrganizer !== undefined,
-    { message: "At least one field is required" }
+    { message: "At least one field is required" },
   );
 
 export const adminUserIdParamSchema = z.object({
